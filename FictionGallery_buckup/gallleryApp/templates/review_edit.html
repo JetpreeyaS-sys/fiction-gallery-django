@@ -1,0 +1,90 @@
+{% extends "baseReview.html" %}
+{% load static %}
+
+{% block title %}
+      FictionGallery | ReviewEdit
+{% endblock title %}
+
+
+<!-- ######################################################## -->
+
+{% block content %}
+  <!-- Form Edit Review -->
+  <div class="max-w-3xl mx-auto bg-white p-10 rounded-3xl shadow-2xl
+            mt-16 sm:mt-20 lg:mt-24
+            mb-12 sm:mb-16 lg:mb-20
+            border border-gray-100 font-sans">
+
+      <h2 class="text-2xl font-bold text-blue-500 mb-6 text-center">แก้ไขรีวิวนิยาย</h2>
+
+      <form method="post" class="space-y-5">
+          {% csrf_token %}
+
+          <!-- แสดงชื่อเรื่อง (แก้ไขไม่ได้) -->
+          <div>
+              <label class="block mb-2 font-medium text-gray-700">Novel:</label>
+              <input type="text" value="{{ review.novel.novel_name }}" disabled
+                     class="w-full border-gray-300 rounded-lg shadow-sm bg-gray-100">
+          </div>
+
+          <!-- Rating -->
+          <div class="mt-4">
+              <label class="block mb-2 font-medium text-gray-700">Update stars:</label>
+              <div id="rating-stars" class="flex space-x-3 cursor-pointer text-5xl">
+                  {% for i in "12345"|make_list %}
+                      <span class="star transition-transform transform hover:scale-125"
+                            data-value="{{ forloop.counter }}"
+                            {% if review.rating >= forloop.counter %}class="text-yellow-400">⭐{% else %}class="text-gray-400">★{% endif %}
+                      </span>
+                  {% endfor %}
+              </div>
+              <input type="hidden" name="rating" id="rating" value="{{ review.rating }}">
+          </div>
+
+          <script>
+              const stars = document.querySelectorAll('.star');
+              const ratingInput = document.getElementById('rating');
+
+              stars.forEach(star => {
+                  star.addEventListener('click', () => {
+                      const rating = parseInt(star.getAttribute('data-value'));
+                      ratingInput.value = rating;
+
+                      stars.forEach((s, index) => {
+                          if (index < rating) {
+                              s.textContent = '⭐';
+                              s.classList.remove('text-gray-400');
+                              s.classList.add('text-yellow-400');
+                          } else {
+                              s.textContent = '★';
+                              s.classList.remove('text-yellow-400');
+                              s.classList.add('text-gray-400');
+                          }
+                      });
+                  });
+              });
+          </script>
+
+          <!-- Comment -->
+          <div>
+              <label for="comment" class="block mb-2 font-medium text-gray-700">Comments:</label>
+              <textarea name="comment" id="comment" required
+                        class="w-full h-32 md:h-48 border-gray-300 rounded-lg shadow-sm
+                     focus:ring-indigo-500 focus:border-indigo-500">{{ review.comment }}</textarea>
+          </div>
+
+          <!-- ปุ่ม -->
+          <div class="text-center space-x-4">
+              <button type="submit"
+                      class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition">
+                  อัปเดตรีวิว
+              </button>
+              <a href="{% url 'review_list' %}"
+                 class="px-6 py-2 bg-gray-400 text-white font-semibold rounded-lg shadow hover:bg-gray-600 transition">
+                  ยกเลิก
+              </a>
+          </div>
+      </form>
+  </div>
+
+{% endblock content %}
