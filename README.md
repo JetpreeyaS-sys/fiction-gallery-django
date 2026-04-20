@@ -1,3 +1,4 @@
+<img width="1919" height="920" alt="Screenshot 2026-04-20 121357" src="https://github.com/user-attachments/assets/937d0f96-acc3-41b6-b241-c778c86e8522" />
 # Fiction Gallery Web Application
 
 ## 📌 Overview
