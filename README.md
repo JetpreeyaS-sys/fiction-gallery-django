@@ -1,7 +1,7 @@
 # Fiction Gallery Web Application
 
 ## 📌 Overview
-Fiction Gallery is a web application for managing and displaying novels, authors, and reviews. The system is built using Django and supports multiple user roles.
+Fiction Gallery is a web application for managing and displaying novels, authors, and reviews. The system is built using Django and supports multiple user roles.Designed to simulate a real-world content management system with user interaction and role-based access.
 
 ## 💡 Project Purpose
 This project was developed to create a centralized platform for managing and discovering novels, allowing users to interact through reviews and role-based access.
