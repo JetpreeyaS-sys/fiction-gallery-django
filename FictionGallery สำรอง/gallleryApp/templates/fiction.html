@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+      FictionGallery | Fiction
+{% endblock title %}
+
+
+{% block content %}
+  <!-- FictionData -->
+  <div class="container mx-auto px-4 py-8">
+      <!-- หัวข้อ -->
+      <h1 class="text-3xl font-extrabold text-center mb-4 text-orange-500 drop-shadow-md">
+          FICTIONS
+      </h1>
+      <div class="w-24 h-1 bg-orange-400 mx-auto rounded-full mb-8"></div>
+
+      <!-- การ์ดนิยาย -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          {% for novel in novels %}
+              <a href="{{ novel.novel_link }}" target="_blank"
+                 class="bg-white rounded-xl overflow-hidden
+                  shadow-[0_4px_20px_rgba(0,0,0,0.1)]
+                  hover:shadow-[0_6px_30px_rgba(0,0,0,0.5)]
+                  transform transition duration-300 hover:-translate-y-2 group">
+
+                  {% if novel.cover_image %}
+                      <img src="{{ novel.cover_image.url }}"
+                           alt="{{ novel.novel_name }}"
+                           class="w-full h-44 object-cover rounded-t-xl
+                            group-hover:scale-105 transition-transform duration-500">
+                  {% else %}
+                      <img src="{% static 'images/default_cover.png' %}"
+                           alt="ไม่มีปก"
+                           class="w-full h-44 object-cover rounded-t-xl
+                            group-hover:scale-105 transition-transform duration-500">
+                  {% endif %}
+
+                  <div class="p-4 flex flex-col items-center text-center">
+
+                      <!-- ชื่อเรื่อง -->
+                      <h2 class="text-base font-semibold text-gray-900
+                           group-hover:text-orange-500 mb-2 truncate">
+                          {{ novel.novel_name }}
+                      </h2>
+
+                      <!-- คำโปรย -->
+                      <p class="text-gray-600 text-xs leading-snug line-clamp-3">
+                          {{ novel.description }}
+                      </p>
+
+                      <!-- ป้ายสถานะ -->
+                      {% if novel.status %}
+                          <span class="absolute top-2 left-2 px-2 py-1 rounded text-white text-xs font-bold {{ novel.status.color }}">
+                              {{ novel.status.status_name }}
+                          </span>
+                      {% endif %}
+                  </div>
+              </a>
+          {% empty %}
+              <p class="col-span-full text-center text-gray-500">ไม่มีข้อมูลนิยาย</p>
+          {% endfor %}
+      </div>
+  </div>
+
+{% endblock content %}

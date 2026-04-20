@@ -1,0 +1,41 @@
+{% extends "base2forReview.html" %}
+{% load static %}
+
+{% block title %}
+      FictionGallery | Reviews-Writer
+{% endblock title %}
+
+<!-- ######################################################## -->
+
+{% block content %}
+  <!-- Form Delete Review -->
+  <div class="max-w-xl mx-auto bg-white p-10 rounded-3xl shadow-2xl
+            mt-16 sm:mt-20 lg:mt-24
+            mb-12 sm:mb-16 lg:mb-20
+            border border-gray-100 font-sans text-center">
+
+      <h2 class="text-2xl font-bold text-red-500 mb-6">ลบรีวิวนิยาย</h2>
+
+      <p class="text-gray-700 mb-6">
+          คุณแน่ใจหรือไม่ว่าต้องการลบรีวิวนี้? <br>
+          <span class="font-semibold text-orange-500">"{{ review.novel.novel_name }}"</span><br>
+          Rating: ⭐ {{ review.rating }} <br>
+          Comment: <span class="italic">"{{ review.comment|truncatechars:50 }}"</span>
+      </p>
+
+      <form method="post">
+          {% csrf_token %}
+          <div class="flex justify-center space-x-6">
+              <button type="submit"
+                      class="px-6 py-2 bg-red-500 text-white font-semibold rounded-lg shadow hover:bg-red-700 transition">
+                  ลบรีวิว
+              </button>
+              <a href="{% url 'review_list_writer' %}"
+                 class="px-6 py-2 bg-gray-400 text-white font-semibold rounded-lg shadow hover:bg-gray-600 transition">
+                  ยกเลิก
+              </a>
+          </div>
+      </form>
+  </div>
+
+{% endblock content %}

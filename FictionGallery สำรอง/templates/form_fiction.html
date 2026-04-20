@@ -1,0 +1,128 @@
+{% extends "base1.html" %}
+{% load static %}
+
+{% block title %}
+      FictionGallery | FictionForm
+{% endblock title %}
+
+  <!-- ############################################################## -->
+
+{% block content %}
+  <!-- novel_create form -->
+  <div class="max-w-4xl mx-auto bg-white p-10 rounded-3xl shadow-2xl
+            mt-16 sm:mt-20 lg:mt-24
+            mb-12 sm:mb-16 lg:mb-20
+            border border-gray-100 font-sans">
+
+      <h2 class="text-3xl font-extrabold mb-8 text-orange-500 flex items-center gap-2 tracking-wide">
+          📥 เพิ่มนิยาย
+      </h2>
+
+      <form method="post" enctype="multipart/form-data" class="space-y-4">
+          {% csrf_token %}
+
+          <!-- ✅ Hidden เก็บค่าตัวกรอง -->
+          <input type="hidden" name="filter" value="{{ filter }}">
+
+          <!-- นามปากกา -->
+          <div>
+              <label class="block text-gray-700 font-semibold mb-2">🪄 นามปากกา</label>
+              <select name="pen_name" required
+                      class="w-full border rounded-2xl px-4 py-2 focus:ring-2 focus:ring-blue-400
+                   focus:outline-none shadow-sm transition duration-200 ease-in-out">
+                  <option value="">-- เลือกนามปากกา --</option>
+                  {% for pen in my_pen_names %}
+                      <option value="{{ pen.pen_name }}"
+                              {% if novel and novel.pen_name == pen.pen_name %}selected{% endif %}>
+                          {{ pen.pen_name }}
+                      </option>
+                  {% endfor %}
+              </select>
+          </div>
+
+          <!-- ชื่อเรื่อง -->
+          <div>
+              <label class="block text-gray-700 font-semibold mb-2">📖 ชื่อเรื่อง</label>
+              <input type="text" name="novel_name" value="{{ novel.novel_name|default:'' }}"
+                     class="w-full border rounded-2xl px-4 py-2 focus:ring-2 focus:ring-blue-400
+                focus:outline-none shadow-sm transition duration-200 ease-in-out">
+          </div>
+
+          <!-- ลิงก์ -->
+          <div>
+              <label class="block text-gray-700 font-semibold mb-2">🔗 ลิงก์</label>
+              <input type="url" name="novel_link" value="{{ novel.novel_link|default:'' }}"
+                     class="w-full border rounded-2xl px-4 py-2 focus:ring-2 focus:ring-blue-400
+                focus:outline-none shadow-sm transition duration-200 ease-in-out">
+          </div>
+
+          <!-- คำโปรย -->
+          <div>
+              <label class="block text-gray-700 font-semibold mb-2">💬 คำโปรย</label>
+              <textarea name="description" rows="4"
+                        class="w-full border rounded-2xl px-4 py-2 focus:ring-2 focus:ring-blue-400
+                focus:outline-none shadow-sm transition duration-200 ease-in-out">{{ novel.description|default:'' }}</textarea>
+          </div>
+
+          <!-- สถานะ -->
+          <div>
+              <label class="block text-gray-700font-semibold mb-2">⭐ สถานะ</label>
+              <select name="status" required class="w-full border rounded px-3 py-2">
+                  <option value="">-- เลือกสถานะ --</option>
+                  {% for s in statuses %}
+                      <option value="{{ s.pk }}"
+                              title="{{ s.description }}"
+                              {% if novel and novel.status and novel.status.pk == s.pk %}selected{% endif %}>
+                          {{ s.status_name }}
+                      </option>
+                  {% endfor %}
+              </select>
+          </div>
+
+          <!-- แนวเรื่อง -->
+          <div>
+              <label class="block text-gray-700 font-semibold mb-2">🏷️ แนวเรื่อง</label>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {% for g in genres %}
+                      <label class="flex items-center space-x-2 border
+                      rounded-xl px-3 py-2 cursor-pointer hover:bg-gray-50 transition"
+                      title="{{ g.description }}">
+                          <input type="checkbox" name="genres" value="{{ g.pk }}" title="{{ g.description }}"
+                                 class="form-checkbox h-4 w-4 text-blue-500 rounded"
+                                 {% if novel and g in novel.genres.all %}checked{% endif %}>
+                          <span>{{ g.genre_name }}</span>
+                      </label>
+                  {% endfor %}
+              </div>
+              <p class="text-sm text-gray-500 mt-1">เลือกได้หลายแนวเรื่อง</p>
+          </div>
+
+          <!-- ปกนิยาย -->
+          <div>
+              <label class="block text-gray-700 font-semibold mb-2">🖼️ ปกนิยาย</label>
+              {% if novel.cover_image %}
+                  <img src="{{ novel.cover_image.url }}" alt="cover"
+                       class="w-32 h-32 object-cover rounded-xl mb-2">
+              {% endif %}
+              <input type="file" name="cover_image" class="w-full">
+          </div>
+
+
+          <div class="flex justify-between items-center pt-6">
+              <a href="javascript:history.back()"
+                 class="bg-gray-100 text-gray-800 px-6 py-2 rounded-2xl
+                hover:bg-gray-200 transition shadow-md font-medium">
+                  ↩️️ ย้อนกลับ
+              </a>
+
+              <button type="submit"
+                      class="bg-orange-500 text-white px-8 py-2 rounded-2xl shadow-md
+                     hover:bg-blue-700 transition transform hover:scale-105 font-medium">
+                  💾 บันทึก
+              </button>
+          </div>
+
+      </form>
+  </div>
+
+{% endblock content %}
